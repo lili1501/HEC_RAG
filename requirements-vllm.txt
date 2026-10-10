@@ -1,0 +1,2 @@
+# LLM server env. vLLM pins its own torch: keep it in a SEPARATE virtualenv. Unpinned, untested here.
+vllm

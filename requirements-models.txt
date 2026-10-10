@@ -1,0 +1,4 @@
+# Real parser + embeddings (NOT installed or run in the build sandbox; unpinned - pin after your first working install)
+-r requirements.txt
+docling
+sentence-transformers

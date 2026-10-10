@@ -1,0 +1,10 @@
+# Core: store, retrieval, API, eval harness, tests (installed and tested in the build sandbox)
+psycopg[binary]==3.3.6
+pgvector==0.5.1
+numpy==2.5.4
+pypdf==6.20.0
+httpx==0.28.1
+fastapi==0.143.0
+uvicorn==0.54.0
+reportlab==5.0.1
+pytest==9.1.1
