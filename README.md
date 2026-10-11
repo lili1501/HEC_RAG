@@ -93,9 +93,56 @@ from the right plan in the top k); and for answers: **fact_match**, **valid_cita
 **correct_refusal** on unanswerable ones, and retrieval/LLM latency p50/p95. These are string-match proxies: strict, cheap
 and reproducible, but they miss correct paraphrases ("thirty dollars") and don't judge fluency.
 
+## Results (real run: Docling, e5-base-v2, pgvector, Phi-3.5-mini-instruct on vLLM)
+Corpus: two fictional U.S. Department of Labor sample SBC plans, 55 chunks. Eval set: 65 hand-written questions
+(53 answerable, 12 unanswerable), `eval/dol_eval.jsonl`. **Small and single-corpus: these numbers show the pipeline
+works and where it fails, not how it would do on real insurer documents.**
+
+Retrieval (answer-bearing chunk of the right plan in the top k, n = 53):
+
+| mode | Recall@1 | Recall@5 | MRR |
+|---|---|---|---|
+| vector (plan filter) | 0.774 | 0.925 | 0.838 |
+| keyword (plan filter) | 0.509 | 0.774 | 0.617 |
+| hybrid / RRF (plan filter) | 0.679 | 0.925 | 0.780 |
+| hybrid, **no** plan filter | 0.340 | 0.830 | 0.553 |
+
+Vector alone beat hybrid on Recall@1 and MRR here, so hybrid is not claimed to be better. The plan filter roughly
+doubled hybrid Recall@1 (0.34 -> 0.68), because the two plans are nearly identical.
+
+Generation (hybrid retrieval, top 5; `reports/eval_generation_v2.json`):
+
+| metric | value |
+|---|---|
+| fact_match (answer states the value) | 0.868 (46/53) |
+| valid_citations | 0.830 |
+| cited_supported (cites the labelled chunk) | 0.547 |
+| grounded_correct (right value and cited chunk supports it) | 0.547 (29/53) |
+| false refusal, exact sentence / loose | 0.038 / 0.113 |
+| correct refusal on unanswerable, exact sentence / loose | 0.167 / 1.000 |
+| retrieval p50 / p95 | 7.0 ms / 7.2 ms |
+| LLM p50 / p95 (one request at a time) | 106 ms / 284 ms |
+
+How to read these:
+- **The eval was revised after seeing a first run.** Run 1 used `facts` for both locating the chunk and judging the
+  answer, and counted only the exact refusal sentence. It scored fact_match 0.358 and grounded_correct 0.264. Much of
+  that was measurement (labels such as "Primary care" had to appear in the answer, and paraphrased refusals did not
+  count), so v2 judges answers on `answer_facts` (values only) and adds loose refusal metrics. The jump from 0.358 to
+  0.868 is mostly a change in the metric, **not a better model**. Both runs used the same model and prompt. The 65
+  questions were also used to find these problems, so they act as a dev set, not a held-out test.
+- **Real failures:** the out-of-pocket-limit questions were answered "not specified" in both plans (4 of the 53; the model
+  also failed one facility-fee question in plan 3). In answers that state the right value, 11 cite an excerpt that is not the labelled
+  one and 6 use an invalid citation format or index, which is why grounded_correct is far below fact_match.
+- **Refusals:** 10 of 12 unanswerable questions were declined in the model's own words rather than the exact
+  sentence, so the strict number (0.167) understates it; the loose number (1.000) is the better reading. Caveat: the
+  loose detector has false positives. One real answer ("does not include copayments...") is counted as declined, so the
+  true loose false-refusal rate is 5/53 = 0.094, not 0.113.
+- `cited_supported` requires the cited excerpt to be the labelled chunk; I have not checked how many of the 11 misses
+  are cited excerpts that also support the answer.
+
 ## Verified vs not verified
 
-**Verified by running it (33 tests, a live run, and deliberately breaking code to confirm tests fail):**
+**Verified by running it (39 tests, a live run, and deliberately breaking code to confirm tests fail):**
 - Real PostgreSQL 16 + pgvector 0.6.0: schema, HNSW and GIN indexes, cosine search returns the hand-computed order and
   scores, plan filtering, exact-vs-index agreement on a small set, idempotent re-ingest, dimension-mismatch rejection,
   keyword search with headings indexed, stop-word-only and hostile query strings handled. (Building it caught a real bug:
@@ -110,15 +157,12 @@ and reproducible, but they miss correct paraphrases ("thirty dollars") and don't
 - Breaking RRF scoring, the plan filter, and citation range checks each made tests fail.
 
 **Not verified:**
-- **Docling**, the embedding model, and vLLM have never run. Docling's chunk-metadata calls and `SentenceTransformer`/vLLM
-  integration may need small fixes on first use.
-- **Any answer-quality number.** The "LLM" in tests is a scripted stand-in, and the hashing embedder only matches shared
-  words. On the 14-chunk fictional corpus its retrieval scores (Recall@5 = 1.0) are trivially high and say nothing about
-  real documents. One observation does carry over: without the plan filter, near-identical plans dropped Recall@1 from
-  1.0 to 0.5 on this set.
+- **Docling, e5-base-v2 and vLLM have now run** (see Results). The unit tests still use a scripted LLM and a hashing
+  embedder; the real-model numbers come from one run on two plans and one 65-question set, with no repeats or variance
+  estimate (single run, one model, one prompt, no seeds varied).
 - Real insurer PDFs: scanned documents (no OCR path in the pypdf fallback), complex multi-column tables, very long
   policies; behaviour with thousands of chunks (HNSW parameters untuned: pgvector defaults, `ef_search=100`).
-- `docker-compose.yml`, `scripts/serve_vllm.sh`, GPU memory and throughput, end-to-end latency with a real model.
+- `docker-compose.yml`, GPU memory and throughput under concurrent load (latency above is one request at a time).
 
 ## Known limitations
 - Heading detection in the fallback chunker is heuristic (ALL-CAPS, numbered, or Markdown headings).
