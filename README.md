@@ -41,7 +41,7 @@ question ─▶ embed ─▶ ┌ vector search (HNSW, cosine) ┐               
 ```bash
 python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
 docker compose up -d                       # PostgreSQL 16 + pgvector on :5432 (user/password/db: rag/rag/ragtest)
-python -m pytest tests -q                  # 35 tests; DB tests need the server above (skipped without it)
+python -m pytest tests -q                  # 36 tests; DB tests need the server above (skipped without it)
 
 # Demo with fictional plans and stand-in components (no models, no GPU):
 python -m insurance_rag.sample_docs --out data/sample
@@ -77,6 +77,12 @@ python -m insurance_rag.ingest --pdf "plans/sbc1.pdf::Plan A" --parser docling -
 bash scripts/serve_vllm.sh &                      # separate vLLM virtualenv; wait for "Application startup complete"
 LLM_URL=http://localhost:8000 python -m insurance_rag.evaluate --eval data/my_eval.jsonl --embedder st --llm vllm
 ```
+`data/dol_eval.jsonl` is the eval set for the two Department of Labor sample SBCs (`sbc-completed-sample-2/3.pdf`, plan names
+"Sample Plan 2" / "Sample Plan 3"): 53 answerable questions and 12 unanswerable ones. Every gold fact was checked to sit inside a single
+Docling chunk of its own plan. The two plans are nearly identical (same deductible, copays and limits), so the plan filter is tested
+only through the "right plan" criterion, and the plans are fictional "Insurance Company 1" samples, not real insurers. The two samples
+have 65 questions in total, which is small: expect wide uncertainty on any percentage, and do not quote one to more than whole percents.
+
 Public, redistributable test documents: the U.S. Department of Labor publishes fictional "Sample Completed SBC" PDFs
 (dol.gov, search "sample completed SBC"); real insurers' SBCs are also public but check their terms before committing them.
 
