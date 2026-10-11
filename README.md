@@ -77,7 +77,7 @@ python -m insurance_rag.ingest --pdf "plans/sbc1.pdf::Plan A" --parser docling -
 bash scripts/serve_vllm.sh &                      # separate vLLM virtualenv; wait for "Application startup complete"
 LLM_URL=http://localhost:8000 python -m insurance_rag.evaluate --eval data/my_eval.jsonl --embedder st --llm vllm
 ```
-`data/dol_eval.jsonl` is the eval set for the two Department of Labor sample SBCs (`sbc-completed-sample-2/3.pdf`, plan names
+`eval/dol_eval.jsonl` is the eval set for the two Department of Labor sample SBCs (`sbc-completed-sample-2/3.pdf`, plan names
 "Sample Plan 2" / "Sample Plan 3"): 53 answerable questions and 12 unanswerable ones. Every gold fact was checked to sit inside a single
 Docling chunk of its own plan. The two plans are nearly identical (same deductible, copays and limits), so the plan filter is tested
 only through the "right plan" criterion, and the plans are fictional "Insurance Company 1" samples, not real insurers. The two samples

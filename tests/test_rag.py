@@ -372,7 +372,7 @@ def test_dump_chunks_and_eval_check(sample, tmp_path):
 
 def test_dol_eval_file_is_well_formed():
     import os
-    path = os.path.join(os.path.dirname(__file__), "..", "data", "dol_eval.jsonl")
+    path = os.path.join(os.path.dirname(__file__), "..", "eval", "dol_eval.jsonl")
     items = evaluate.load_eval(path)
     assert len(items) == 65 and {i["plan"] for i in items} == {"Sample Plan 2", "Sample Plan 3"}
     assert sum(not i["answerable"] for i in items) == 12 and all(i["facts"] for i in items if i["answerable"])
