@@ -18,18 +18,28 @@ mkdir -p "$PGROOT" "$RUN"
 PGBIN=/usr/lib/postgresql/16/bin           # location inside the pgvector/pgvector:pg16 (Debian) image
 ap() { apptainer exec --bind "$PGROOT:$PGROOT" "$IMG" "$@"; }
 
+pg_up() { ap $PGBIN/pg_isready -q -h 127.0.0.1 -p "$PGPORT"; }
+
 case "${1:-}" in
   start)
     [[ -f $IMG ]] || (cd "$PGROOT" && apptainer pull pgvector_pg16.sif docker://pgvector/pgvector:pg16)
-    if [[ ! -d $DATA ]]; then
-      ap $PGBIN/initdb -D "$DATA" -U rag --auth=trust
+    [[ -d $DATA ]] || ap $PGBIN/initdb -D "$DATA" -U rag --auth=trust
+    if pg_up; then
+      echo "already running"
+    else
+      # Run postgres in the FOREGROUND of one long-lived apptainer process. (Starting it as a daemon with pg_ctl lets
+      # apptainer unmount the image when the command returns, which kills the server mid-run.)
+      nohup apptainer exec --bind "$PGROOT:$PGROOT" "$IMG" $PGBIN/postgres -D "$DATA" -p "$PGPORT" -k "$RUN" \
+        -c listen_addresses=127.0.0.1 > "$PGROOT/postgres.log" 2>&1 &
+      echo $! > "$PGROOT/apptainer.pid"
+      for _ in $(seq 1 90); do pg_up && break; sleep 1; done
+      pg_up || { echo "postgres did not come up; last log lines:"; tail -20 "$PGROOT/postgres.log"; exit 1; }
     fi
-    ap $PGBIN/pg_ctl -D "$DATA" -o "-p $PGPORT -k $RUN -c listen_addresses=127.0.0.1" -l "$PGROOT/postgres.log" -w start
     ap $PGBIN/psql -h 127.0.0.1 -p "$PGPORT" -U rag -d postgres -tc "SELECT 1 FROM pg_database WHERE datname='ragtest'" | grep -q 1 \
       || ap $PGBIN/createdb -h 127.0.0.1 -p "$PGPORT" -U rag ragtest
     echo "ready: postgresql://rag:rag@localhost:$PGPORT/ragtest  (log: $PGROOT/postgres.log)"
     ;;
-  stop)   ap $PGBIN/pg_ctl -D "$DATA" -m fast stop ;;
-  status) ap $PGBIN/pg_ctl -D "$DATA" status ;;
+  stop)   ap $PGBIN/pg_ctl -D "$DATA" -m fast -w stop ;;
+  status) pg_up && echo "running" || { echo "not running"; exit 1; } ;;
   *) echo "usage: $0 start|stop|status"; exit 2 ;;
 esac
