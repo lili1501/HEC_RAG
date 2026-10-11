@@ -1,62 +1,62 @@
-{"question": "What is the overall deductible?", "plan": "Sample Plan 2", "facts": ["$500", "$1,000"], "answerable": true}
-{"question": "What is the out-of-pocket limit for network providers?", "plan": "Sample Plan 2", "facts": ["$2,500", "$5,000"], "answerable": true}
-{"question": "What is the out-of-pocket limit for out-of-network providers?", "plan": "Sample Plan 2", "facts": ["$4,000", "$8,000"], "answerable": true}
-{"question": "Are there separate deductibles for specific services?", "plan": "Sample Plan 2", "facts": ["$300", "prescription", "occupational therapy"], "answerable": true}
-{"question": "Do I need a referral to see a specialist?", "plan": "Sample Plan 2", "facts": ["referral"], "answerable": true}
-{"question": "How much is a primary care visit?", "plan": "Sample Plan 2", "facts": ["Primary care visit", "$35 copay"], "answerable": true}
-{"question": "How much is a specialist visit?", "plan": "Sample Plan 2", "facts": ["Specialist visit", "$50 copay/visit"], "answerable": true}
-{"question": "What happens if I do not get preauthorization for a specialist visit?", "plan": "Sample Plan 2", "facts": ["reduced by 50%"], "answerable": true}
-{"question": "How much is a diagnostic test such as an x-ray or blood work?", "plan": "Sample Plan 2", "facts": ["$10 copay/test"], "answerable": true}
-{"question": "How much do I pay for an MRI or CT scan?", "plan": "Sample Plan 2", "facts": ["Imaging", "$50 copay/test"], "answerable": true}
-{"question": "What is the copay for preferred brand drugs (Tier 2)?", "plan": "Sample Plan 2", "facts": ["$30 copay/prescription"], "answerable": true}
-{"question": "How much do specialty drugs (Tier 4) cost in network?", "plan": "Sample Plan 2", "facts": ["Specialty drugs", "50% coinsurance"], "answerable": true}
-{"question": "How many days of a prescription can I get by mail order?", "plan": "Sample Plan 2", "facts": ["31-90 day supply"], "answerable": true}
-{"question": "What is the facility fee for outpatient surgery in network?", "plan": "Sample Plan 2", "facts": ["$100/day copay"], "answerable": true}
-{"question": "What do I pay for emergency room care?", "plan": "Sample Plan 2", "facts": ["Emergency room care", "20% coinsurance"], "answerable": true}
-{"question": "What is the copay for urgent care?", "plan": "Sample Plan 2", "facts": ["Urgent care", "$30 copay/visit"], "answerable": true}
-{"question": "How much do mental health outpatient services cost?", "plan": "Sample Plan 2", "facts": ["Outpatient services", "$35 copay/office visit"], "answerable": true}
-{"question": "How many home health care visits are covered per year?", "plan": "Sample Plan 2", "facts": ["Home health care", "60 visits/year"], "answerable": true}
-{"question": "How much is a child's eye exam?", "plan": "Sample Plan 2", "facts": ["Children's eye exam", "$35 copay/visit"], "answerable": true}
-{"question": "How many pairs of children's glasses are covered per year?", "plan": "Sample Plan 2", "facts": ["one pair of glasses/year"], "answerable": true}
-{"question": "What does a child's dental check-up cost?", "plan": "Sample Plan 2", "facts": ["Children's dental check-up", "No charge"], "answerable": true}
-{"question": "Which services does the plan generally not cover?", "plan": "Sample Plan 2", "facts": ["Cosmetic surgery", "Infertility treatment"], "answerable": true}
-{"question": "What can I do if my claim is denied?", "plan": "Sample Plan 2", "facts": ["grievance or appeal"], "answerable": true}
-{"question": "What could I be billed if I see an out-of-network provider?", "plan": "Sample Plan 2", "facts": ["balance billing"], "answerable": true}
-{"question": "What expenses do not count toward the out-of-pocket limit?", "plan": "Sample Plan 2", "facts": ["premiums", "balance-billing charges"], "answerable": true}
-{"question": "How many rehabilitation visits are covered per year?", "plan": "Sample Plan 2", "facts": ["Rehabilitation services", "60 visits/year"], "answerable": true}
-{"question": "What is excluded from durable medical equipment coverage?", "plan": "Sample Plan 2", "facts": ["Durable medical equipment", "vehicle modifications"], "answerable": true}
-{"question": "How many skilled nursing care visits are covered per calendar year?", "plan": "Sample Plan 2", "facts": ["Skilled nursing care", "60 visits/calendar year"], "answerable": true}
+{"question": "What is the overall deductible?", "plan": "Sample Plan 2", "facts": ["$500", "$1,000"], "answerable": true, "answer_facts": ["$500", "$1,000"]}
+{"question": "What is the out-of-pocket limit for network providers?", "plan": "Sample Plan 2", "facts": ["$2,500", "$5,000"], "answerable": true, "answer_facts": ["$2,500", "$5,000"]}
+{"question": "What is the out-of-pocket limit for out-of-network providers?", "plan": "Sample Plan 2", "facts": ["$4,000", "$8,000"], "answerable": true, "answer_facts": ["$4,000", "$8,000"]}
+{"question": "Are there separate deductibles for specific services?", "plan": "Sample Plan 2", "facts": ["$300", "prescription", "occupational therapy"], "answerable": true, "answer_facts": ["$300"]}
+{"question": "Do I need a referral to see a specialist?", "plan": "Sample Plan 2", "facts": ["referral"], "answerable": true, "answer_facts": ["yes", "referral"]}
+{"question": "How much is a primary care visit?", "plan": "Sample Plan 2", "facts": ["Primary care visit", "$35 copay"], "answerable": true, "answer_facts": ["$35"]}
+{"question": "How much is a specialist visit?", "plan": "Sample Plan 2", "facts": ["Specialist visit", "$50 copay/visit"], "answerable": true, "answer_facts": ["$50"]}
+{"question": "What happens if I do not get preauthorization for a specialist visit?", "plan": "Sample Plan 2", "facts": ["reduced by 50%"], "answerable": true, "answer_facts": ["50%"]}
+{"question": "How much is a diagnostic test such as an x-ray or blood work?", "plan": "Sample Plan 2", "facts": ["$10 copay/test"], "answerable": true, "answer_facts": ["$10"]}
+{"question": "How much do I pay for an MRI or CT scan?", "plan": "Sample Plan 2", "facts": ["Imaging", "$50 copay/test"], "answerable": true, "answer_facts": ["$50"]}
+{"question": "What is the copay for preferred brand drugs (Tier 2)?", "plan": "Sample Plan 2", "facts": ["$30 copay/prescription"], "answerable": true, "answer_facts": ["$30"]}
+{"question": "How much do specialty drugs (Tier 4) cost in network?", "plan": "Sample Plan 2", "facts": ["Specialty drugs", "50% coinsurance"], "answerable": true, "answer_facts": ["50%"]}
+{"question": "How many days of a prescription can I get by mail order?", "plan": "Sample Plan 2", "facts": ["31-90 day supply"], "answerable": true, "answer_facts": ["31", "90"]}
+{"question": "What is the facility fee for outpatient surgery in network?", "plan": "Sample Plan 2", "facts": ["$100/day copay"], "answerable": true, "answer_facts": ["$100"]}
+{"question": "What do I pay for emergency room care?", "plan": "Sample Plan 2", "facts": ["Emergency room care", "20% coinsurance"], "answerable": true, "answer_facts": ["20%"]}
+{"question": "What is the copay for urgent care?", "plan": "Sample Plan 2", "facts": ["Urgent care", "$30 copay/visit"], "answerable": true, "answer_facts": ["$30"]}
+{"question": "How much do mental health outpatient services cost?", "plan": "Sample Plan 2", "facts": ["Outpatient services", "$35 copay/office visit"], "answerable": true, "answer_facts": ["$35"]}
+{"question": "How many home health care visits are covered per year?", "plan": "Sample Plan 2", "facts": ["Home health care", "60 visits/year"], "answerable": true, "answer_facts": ["60 visits"]}
+{"question": "How much is a child's eye exam?", "plan": "Sample Plan 2", "facts": ["Children's eye exam", "$35 copay/visit"], "answerable": true, "answer_facts": ["$35"]}
+{"question": "How many pairs of children's glasses are covered per year?", "plan": "Sample Plan 2", "facts": ["one pair of glasses/year"], "answerable": true, "answer_facts": ["one pair"]}
+{"question": "What does a child's dental check-up cost?", "plan": "Sample Plan 2", "facts": ["Children's dental check-up", "No charge"], "answerable": true, "answer_facts": ["no charge"]}
+{"question": "Which services does the plan generally not cover?", "plan": "Sample Plan 2", "facts": ["Cosmetic surgery", "Infertility treatment"], "answerable": true, "answer_facts": ["Cosmetic surgery", "Infertility treatment"]}
+{"question": "What can I do if my claim is denied?", "plan": "Sample Plan 2", "facts": ["grievance or appeal"], "answerable": true, "answer_facts": ["grievance or appeal"]}
+{"question": "What could I be billed if I see an out-of-network provider?", "plan": "Sample Plan 2", "facts": ["balance billing"], "answerable": true, "answer_facts": ["balance billing"]}
+{"question": "What expenses do not count toward the out-of-pocket limit?", "plan": "Sample Plan 2", "facts": ["premiums", "balance-billing charges"], "answerable": true, "answer_facts": ["premiums", "balance-billing"]}
+{"question": "How many rehabilitation visits are covered per year?", "plan": "Sample Plan 2", "facts": ["Rehabilitation services", "60 visits/year"], "answerable": true, "answer_facts": ["60 visits"]}
+{"question": "What is excluded from durable medical equipment coverage?", "plan": "Sample Plan 2", "facts": ["Durable medical equipment", "vehicle modifications"], "answerable": true, "answer_facts": ["vehicle modifications"]}
+{"question": "How many skilled nursing care visits are covered per calendar year?", "plan": "Sample Plan 2", "facts": ["Skilled nursing care", "60 visits/calendar year"], "answerable": true, "answer_facts": ["60 visits"]}
 {"question": "What is the monthly premium for this plan?", "plan": "Sample Plan 2", "facts": [], "answerable": false}
 {"question": "Is LASIK eye surgery covered?", "plan": "Sample Plan 2", "facts": [], "answerable": false}
 {"question": "What is the copay for a telehealth visit?", "plan": "Sample Plan 2", "facts": [], "answerable": false}
 {"question": "How many chiropractor visits are covered per year?", "plan": "Sample Plan 2", "facts": [], "answerable": false}
 {"question": "Which hospitals are in the network?", "plan": "Sample Plan 2", "facts": [], "answerable": false}
 {"question": "What is the phone number for member services?", "plan": "Sample Plan 2", "facts": [], "answerable": false}
-{"question": "What is the overall deductible?", "plan": "Sample Plan 3", "facts": ["$500", "$1,000"], "answerable": true}
-{"question": "What is the out-of-pocket limit for network providers?", "plan": "Sample Plan 3", "facts": ["$2,500", "$5,000"], "answerable": true}
-{"question": "What is the out-of-pocket limit for out-of-network providers?", "plan": "Sample Plan 3", "facts": ["$4,000", "$8,000"], "answerable": true}
-{"question": "Are there separate deductibles for specific services?", "plan": "Sample Plan 3", "facts": ["$300", "prescription", "occupational therapy"], "answerable": true}
-{"question": "Do I need a referral to see a specialist?", "plan": "Sample Plan 3", "facts": ["referral"], "answerable": true}
-{"question": "How much is a primary care visit?", "plan": "Sample Plan 3", "facts": ["Primary care visit", "$35 copay"], "answerable": true}
-{"question": "How much is a specialist visit?", "plan": "Sample Plan 3", "facts": ["Specialist visit", "$50 copay/visit"], "answerable": true}
-{"question": "What happens if I do not get preauthorization for a specialist visit?", "plan": "Sample Plan 3", "facts": ["reduced by 50%"], "answerable": true}
-{"question": "How much is a diagnostic test such as an x-ray or blood work?", "plan": "Sample Plan 3", "facts": ["$10 copay/test"], "answerable": true}
-{"question": "How much do I pay for an MRI or CT scan?", "plan": "Sample Plan 3", "facts": ["Imaging", "$50 copay/test"], "answerable": true}
-{"question": "What is the copay for preferred brand drugs (Tier 2)?", "plan": "Sample Plan 3", "facts": ["$30 copay/prescription"], "answerable": true}
-{"question": "How much do specialty drugs (Tier 4) cost in network?", "plan": "Sample Plan 3", "facts": ["Specialty drugs", "50% coinsurance"], "answerable": true}
-{"question": "How many days of a prescription can I get by mail order?", "plan": "Sample Plan 3", "facts": ["31-90 day supply"], "answerable": true}
-{"question": "What is the facility fee for outpatient surgery in network?", "plan": "Sample Plan 3", "facts": ["$100/day copay"], "answerable": true}
-{"question": "What do I pay for emergency room care?", "plan": "Sample Plan 3", "facts": ["Emergency room care", "20% coinsurance"], "answerable": true}
-{"question": "What is the copay for urgent care?", "plan": "Sample Plan 3", "facts": ["Urgent care", "$30 copay/visit"], "answerable": true}
-{"question": "How much do mental health outpatient services cost?", "plan": "Sample Plan 3", "facts": ["Outpatient services", "$35 copay/office visit"], "answerable": true}
-{"question": "How many home health care visits are covered per year?", "plan": "Sample Plan 3", "facts": ["Home health care", "60 visits/year"], "answerable": true}
-{"question": "How much is a child's eye exam?", "plan": "Sample Plan 3", "facts": ["Children's eye exam", "$35 copay/visit"], "answerable": true}
-{"question": "How many pairs of children's glasses are covered per year?", "plan": "Sample Plan 3", "facts": ["one pair of glasses/year"], "answerable": true}
-{"question": "What does a child's dental check-up cost?", "plan": "Sample Plan 3", "facts": ["Children's dental check-up", "No charge"], "answerable": true}
-{"question": "Which services does the plan generally not cover?", "plan": "Sample Plan 3", "facts": ["Cosmetic surgery", "Infertility treatment"], "answerable": true}
-{"question": "What can I do if my claim is denied?", "plan": "Sample Plan 3", "facts": ["grievance or appeal"], "answerable": true}
-{"question": "What could I be billed if I see an out-of-network provider?", "plan": "Sample Plan 3", "facts": ["balance billing"], "answerable": true}
-{"question": "What expenses do not count toward the out-of-pocket limit?", "plan": "Sample Plan 3", "facts": ["premiums", "balance-billing charges"], "answerable": true}
+{"question": "What is the overall deductible?", "plan": "Sample Plan 3", "facts": ["$500", "$1,000"], "answerable": true, "answer_facts": ["$500", "$1,000"]}
+{"question": "What is the out-of-pocket limit for network providers?", "plan": "Sample Plan 3", "facts": ["$2,500", "$5,000"], "answerable": true, "answer_facts": ["$2,500", "$5,000"]}
+{"question": "What is the out-of-pocket limit for out-of-network providers?", "plan": "Sample Plan 3", "facts": ["$4,000", "$8,000"], "answerable": true, "answer_facts": ["$4,000", "$8,000"]}
+{"question": "Are there separate deductibles for specific services?", "plan": "Sample Plan 3", "facts": ["$300", "prescription", "occupational therapy"], "answerable": true, "answer_facts": ["$300"]}
+{"question": "Do I need a referral to see a specialist?", "plan": "Sample Plan 3", "facts": ["referral"], "answerable": true, "answer_facts": ["yes", "referral"]}
+{"question": "How much is a primary care visit?", "plan": "Sample Plan 3", "facts": ["Primary care visit", "$35 copay"], "answerable": true, "answer_facts": ["$35"]}
+{"question": "How much is a specialist visit?", "plan": "Sample Plan 3", "facts": ["Specialist visit", "$50 copay/visit"], "answerable": true, "answer_facts": ["$50"]}
+{"question": "What happens if I do not get preauthorization for a specialist visit?", "plan": "Sample Plan 3", "facts": ["reduced by 50%"], "answerable": true, "answer_facts": ["50%"]}
+{"question": "How much is a diagnostic test such as an x-ray or blood work?", "plan": "Sample Plan 3", "facts": ["$10 copay/test"], "answerable": true, "answer_facts": ["$10"]}
+{"question": "How much do I pay for an MRI or CT scan?", "plan": "Sample Plan 3", "facts": ["Imaging", "$50 copay/test"], "answerable": true, "answer_facts": ["$50"]}
+{"question": "What is the copay for preferred brand drugs (Tier 2)?", "plan": "Sample Plan 3", "facts": ["$30 copay/prescription"], "answerable": true, "answer_facts": ["$30"]}
+{"question": "How much do specialty drugs (Tier 4) cost in network?", "plan": "Sample Plan 3", "facts": ["Specialty drugs", "50% coinsurance"], "answerable": true, "answer_facts": ["50%"]}
+{"question": "How many days of a prescription can I get by mail order?", "plan": "Sample Plan 3", "facts": ["31-90 day supply"], "answerable": true, "answer_facts": ["31", "90"]}
+{"question": "What is the facility fee for outpatient surgery in network?", "plan": "Sample Plan 3", "facts": ["$100/day copay"], "answerable": true, "answer_facts": ["$100"]}
+{"question": "What do I pay for emergency room care?", "plan": "Sample Plan 3", "facts": ["Emergency room care", "20% coinsurance"], "answerable": true, "answer_facts": ["20%"]}
+{"question": "What is the copay for urgent care?", "plan": "Sample Plan 3", "facts": ["Urgent care", "$30 copay/visit"], "answerable": true, "answer_facts": ["$30"]}
+{"question": "How much do mental health outpatient services cost?", "plan": "Sample Plan 3", "facts": ["Outpatient services", "$35 copay/office visit"], "answerable": true, "answer_facts": ["$35"]}
+{"question": "How many home health care visits are covered per year?", "plan": "Sample Plan 3", "facts": ["Home health care", "60 visits/year"], "answerable": true, "answer_facts": ["60 visits"]}
+{"question": "How much is a child's eye exam?", "plan": "Sample Plan 3", "facts": ["Children's eye exam", "$35 copay/visit"], "answerable": true, "answer_facts": ["$35"]}
+{"question": "How many pairs of children's glasses are covered per year?", "plan": "Sample Plan 3", "facts": ["one pair of glasses/year"], "answerable": true, "answer_facts": ["one pair"]}
+{"question": "What does a child's dental check-up cost?", "plan": "Sample Plan 3", "facts": ["Children's dental check-up", "No charge"], "answerable": true, "answer_facts": ["no charge"]}
+{"question": "Which services does the plan generally not cover?", "plan": "Sample Plan 3", "facts": ["Cosmetic surgery", "Infertility treatment"], "answerable": true, "answer_facts": ["Cosmetic surgery", "Infertility treatment"]}
+{"question": "What can I do if my claim is denied?", "plan": "Sample Plan 3", "facts": ["grievance or appeal"], "answerable": true, "answer_facts": ["grievance or appeal"]}
+{"question": "What could I be billed if I see an out-of-network provider?", "plan": "Sample Plan 3", "facts": ["balance billing"], "answerable": true, "answer_facts": ["balance billing"]}
+{"question": "What expenses do not count toward the out-of-pocket limit?", "plan": "Sample Plan 3", "facts": ["premiums", "balance-billing charges"], "answerable": true, "answer_facts": ["premiums", "balance-billing"]}
 {"question": "What is the monthly premium for this plan?", "plan": "Sample Plan 3", "facts": [], "answerable": false}
 {"question": "Is LASIK eye surgery covered?", "plan": "Sample Plan 3", "facts": [], "answerable": false}
 {"question": "What is the copay for a telehealth visit?", "plan": "Sample Plan 3", "facts": [], "answerable": false}

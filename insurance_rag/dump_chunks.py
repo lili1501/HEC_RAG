@@ -29,8 +29,12 @@ def check_eval(items: list[dict], chunks) -> list[str]:
     for it in items:
         if it["plan"] not in plans:
             problems.append(f"unknown plan {it['plan']!r}: {it['question']}")
-        elif it["answerable"] and not any(c.plan == it["plan"] and has_facts(c.text, it["facts"]) for c in chunks):
-            problems.append(f"facts {it['facts']} not found together in one {it['plan']} chunk: {it['question']}")
+        elif it["answerable"]:
+            homes = [c for c in chunks if c.plan == it["plan"] and has_facts(c.text, it["facts"])]
+            if not homes:
+                problems.append(f"facts {it['facts']} not found together in one {it['plan']} chunk: {it['question']}")
+            elif it.get("answer_facts") and not any(has_facts(c.text, it["answer_facts"]) for c in homes):
+                problems.append(f"answer_facts {it['answer_facts']} are not in the chunk that holds the facts: {it['question']}")
     return problems
 
 

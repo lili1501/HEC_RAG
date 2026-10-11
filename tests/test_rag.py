@@ -377,3 +377,36 @@ def test_dol_eval_file_is_well_formed():
     assert len(items) == 65 and {i["plan"] for i in items} == {"Sample Plan 2", "Sample Plan 3"}
     assert sum(not i["answerable"] for i in items) == 12 and all(i["facts"] for i in items if i["answerable"])
     assert len({(i["plan"], i["question"]) for i in items}) == 65          # no duplicates
+
+
+def test_declines_catches_paraphrased_refusals_but_not_real_answers():
+    for t in ["I could not find this information in the plan documents provided.",
+              "The provided plan excerpts do not contain information regarding the copay for a telehealth visit.",
+              "The plan documents do not specify an out-of-pocket limit [1].",
+              "Chiropractic care is listed, but it does not specify the number of visits."]:
+        assert evaluate.declines(t), t
+    for t in ["$500 for an individual or $1,000 for a family [1]", "You will pay 20% coinsurance [2].",
+              "Out-of-Network Provider: Not covered [3].", "A specialist visit costs a $50 copay [1]."]:
+        assert not evaluate.declines(t), t
+
+
+@needs_db
+def test_answer_facts_decide_fact_match_while_facts_locate_the_chunk(loaded, sample):
+    r, _, _ = loaded
+    base = [i for i in evaluate.load_eval(sample["eval"]) if i["answerable"]][:6]
+    # `facts` demands a phrase a short correct answer would not repeat; `answer_facts` is only the value
+    strict = [dict(i, facts=i["facts"] + ["zzz-not-in-any-chunk"]) for i in base]
+    assert evaluate.generation_eval(r, Scripted(oracle_llm), strict, k=5)["fact_match"] == 0.0
+    lenient = [dict(i, answer_facts=b["facts"]) for i, b in zip(strict, base)]            # answer is judged on the value only
+    out = evaluate.generation_eval(r, Scripted(oracle_llm), lenient, k=5)
+    assert out["fact_match"] == 1.0
+    assert out["cited_supported"] == 0.0 and out["grounded_correct"] == 0.0   # grounding still needs the source chunk
+
+
+def test_dol_eval_answer_facts_are_consistent():
+    import os
+    items = evaluate.load_eval(os.path.join(os.path.dirname(__file__), "..", "eval", "dol_eval.jsonl"))
+    for i in items:
+        if i["answerable"]:
+            assert i["answer_facts"], i
+            assert all(isinstance(a, str) and a.strip() for a in i["answer_facts"]), i

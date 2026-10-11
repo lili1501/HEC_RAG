@@ -34,6 +34,16 @@ def has_facts(text: str, facts: list[str]) -> bool:
     return all(norm(f) in t for f in facts)
 
 
+_DECLINE = re.compile(r"could not find|couldn'?t find|no (?:specific |relevant )?information|"
+                      r"(?:do|does) not (?:specify|provide|contain|mention|include|state|say|list)|not (?:specified|provided|mentioned)", re.I)
+
+
+def declines(text: str) -> bool:
+    """Heuristic: the answer says the documents do not contain the information, in ANY wording. Evaluation only.
+    The strict flag (`refused`) needs the exact refusal sentence, which a model often paraphrases."""
+    return bool(_DECLINE.search(text))
+
+
 def load_eval(path: str) -> list[dict]:
     with open(path) as f:
         items = [json.loads(line) for line in f if line.strip()]
@@ -70,9 +80,11 @@ def generation_eval(retriever: Retriever, llm, items: list[dict], k: int = 5, pl
         r_ms.append(a.retrieval_ms)
         if not a.short_circuited:
             l_ms.append(a.llm_ms)
-        row = {"question": it["question"], "answerable": it["answerable"], "refused": a.refused, "answer": a.text}
+        row = {"question": it["question"], "plan": it["plan"], "answerable": it["answerable"], "refused": a.refused,
+               "declined": declines(a.text), "answer": a.text}
         if it["answerable"]:
-            row["fact_match"] = has_facts(a.text, it["facts"]) and not a.refused
+            # `answer_facts` = the value(s) a correct answer must state; `facts` (below) = strings that locate the source chunk
+            row["fact_match"] = has_facts(a.text, it.get("answer_facts") or it["facts"]) and not a.refused
             row["valid_citations"] = bool(a.cited) and not a.invalid_citations
             row["cited_supported"] = any(a.sources[n - 1].plan == it["plan"] and has_facts(a.sources[n - 1].text, it["facts"])
                                          for n in a.cited)
@@ -86,6 +98,9 @@ def generation_eval(retriever: Retriever, llm, items: list[dict], k: int = 5, pl
         "cited_supported": m(ans, "cited_supported"), "grounded_correct": m(ans, "grounded_correct"),
         "false_refusal": m(ans, "refused"),
         "correct_refusal": m(un, "refused"),
+        # same two measures with the looser paraphrase-tolerant detector (see `declines`)
+        "false_refusal_loose": m(ans, "declined"),
+        "correct_refusal_loose": m(un, "declined"),
         "retrieval_ms_p50": _pct(r_ms, 50), "retrieval_ms_p95": _pct(r_ms, 95),
         "llm_ms_p50": _pct(l_ms, 50), "llm_ms_p95": _pct(l_ms, 95),
         "rows": rows,
