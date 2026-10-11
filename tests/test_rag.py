@@ -351,7 +351,20 @@ def test_stub_llm_behaviour():
     assert llm.chat(build_messages("Is bariatric surgery covered?", [_hit(1, "Parking is free.")])) == NOT_FOUND
 
 
-@pytest.mark.parametrize("mod", ["ingest", "evaluate", "sample_docs"])
+@pytest.mark.parametrize("mod", ["ingest", "evaluate", "sample_docs", "dump_chunks"])
 def test_cli_help(mod):
     r = subprocess.run([sys.executable, "-m", f"insurance_rag.{mod}", "--help"], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
+
+
+def test_dump_chunks_and_eval_check(sample, tmp_path):
+    from insurance_rag import dump_chunks
+    specs = [a for n, pth in sample["pdfs"].items() for a in ("--pdf", f"{pth}::{n}")]
+    out = tmp_path / "chunks.txt"
+    assert dump_chunks.main([*specs, "--parser", "pypdf", "--out", str(out), "--check-eval", sample["eval"]]) == 0
+    text = out.read_text()
+    assert "plan=Cedar Gold 1000" in text and "--- chunk 0" in text
+    bad = tmp_path / "bad.jsonl"                                  # a fact that is not in the plan must be reported
+    bad.write_text('{"question": "q", "plan": "Cedar Gold 1000", "facts": ["$999,999"], "answerable": true}\n'
+                   '{"question": "q2", "plan": "Nope", "facts": [], "answerable": false}\n')
+    assert dump_chunks.main([*specs, "--parser", "pypdf", "--check-eval", str(bad)]) == 1

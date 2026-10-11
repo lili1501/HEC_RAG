@@ -41,7 +41,7 @@ question ─▶ embed ─▶ ┌ vector search (HNSW, cosine) ┐               
 ```bash
 python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
 docker compose up -d                       # PostgreSQL 16 + pgvector on :5432 (user/password/db: rag/rag/ragtest)
-python -m pytest tests -q                  # 33 tests; DB tests need the server above (skipped without it)
+python -m pytest tests -q                  # 35 tests; DB tests need the server above (skipped without it)
 
 # Demo with fictional plans and stand-in components (no models, no GPU):
 python -m insurance_rag.sample_docs --out data/sample
@@ -66,6 +66,19 @@ Do not load documents containing a member's personal health information into a s
 To measure real quality, write an eval set in the format of `data/sample/eval.jsonl` from your own PDFs (question,
 plan, the exact fact strings the answer must contain), ideally 100+ questions including unanswerable ones.
 Postgres on a cluster like HiPerGator would need an Apptainer image or a service you reach over the network; not tried.
+
+### On HiPerGator (no Docker; untested here)
+```bash
+bash scripts/hipergator_postgres.sh start        # Apptainer + pgvector/pgvector:pg16, data under $EXT/_pg; same node as the commands below
+# 1. See what Docling extracts from your plan PDFs, and check every gold fact in your eval file against it (no DB, no GPU):
+python -m insurance_rag.dump_chunks --pdf "plans/sbc1.pdf::Plan A" --parser docling --out out/chunks.txt --check-eval data/my_eval.jsonl
+# 2. Ingest, serve the LLM (GPU), evaluate:
+python -m insurance_rag.ingest --pdf "plans/sbc1.pdf::Plan A" --parser docling --embedder st --recreate
+bash scripts/serve_vllm.sh &                      # separate vLLM virtualenv; wait for "Application startup complete"
+LLM_URL=http://localhost:8000 python -m insurance_rag.evaluate --eval data/my_eval.jsonl --embedder st --llm vllm
+```
+Public, redistributable test documents: the U.S. Department of Labor publishes fictional "Sample Completed SBC" PDFs
+(dol.gov, search "sample completed SBC"); real insurers' SBCs are also public but check their terms before committing them.
 
 ## What the evaluation measures
 `evaluate.py` reports, per retrieval mode (vector, keyword, hybrid): **Recall@1/3/5** and **MRR** (an answer-bearing chunk
